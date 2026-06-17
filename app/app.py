@@ -103,37 +103,49 @@ st.divider()
 
 if st.button("💰 Predict Price", type="primary", use_container_width=True):
 
-    # Encode categorical inputs
-    city_enc = le_city.transform([city])[0] if city in le_city.classes_ else 0
-    district_enc = le_district.transform([district])[0] if district in le_district.classes_ else 0
-    type_enc = le_type.transform([property_type])[0] if property_type in le_type.classes_ else 0
+    # 1. Map UI English Property Types to the original Arabic strings used in training
+    type_mapping = {
+        'Villa': 'فيلا',
+        'Apartment': 'شقة',
+        'Land': 'أرض',
+        'Commercial': 'تجاري'
+    }
+    mapped_property_type = type_mapping.get(property_type, property_type)
 
-    # Get lat/lng
+    # 2. Encode categorical inputs safely
+    city_enc = le_city.transform([city])[0] if city in le_city.classes_ else le_city.transform([le_city.classes_[0]])[0]
+    district_enc = le_district.transform([district])[0] if district in le_district.classes_ else le_district.transform([le_district.classes_[0]])[0]
+    type_enc = le_type.transform([mapped_property_type])[0] if mapped_property_type in le_type.classes_ else le_type.transform([le_type.classes_[0]])[0]
+
+    # 3. Get approximate lat/lng coordinates
     lat, lng = city_coords.get(city, (24.7136, 46.6753))
 
-    # Build input row
+    # 4. Build input row using the EXACT column names from the notebook training phase
     input_data = pd.DataFrame([{
-        'area'        : area,
-        'beds'        : beds,
-        'livings'     : livings,
-        'wc'          : wc,
-        'street_width': street_width,
-        'age'         : age,
-        'furnished'   : int(furnished),
-        'ac'          : int(ac),
-        'ketchen'     : int(ketchen),
-        'lat'         : lat,
-        'lng'         : lng,
-        'city_enc'    : city_enc,
-        'district_enc': district_enc,
-        'type_enc'    : type_enc,
+        'size'            : area,              # Notebook used 'size', not 'area'
+        'beds'            : beds,
+        'v_bathrooms'     : wc,                # Notebook used 'v_bathrooms', not 'wc'
+        'v_living_rooms'  : livings,           # Notebook used 'v_living_rooms', not 'livings'
+        'street_width'    : street_width,
+        'age'             : age,
+        'is_furnished'    : int(furnished),    # Notebook used 'is_furnished'
+        'has_ac'          : int(ac),           # Notebook used 'has_ac'
+        'has_kitchen'     : int(ketchen),      # Notebook used 'has_kitchen'
+        'lat'             : lat,
+        'lng'             : lng,
+        'city_encoded'    : city_enc,          # Notebook used 'city_encoded'
+        'district_encoded': district_enc,      # Notebook used 'district_encoded'
+        'type_encoded'    : type_enc           # Notebook used 'type_encoded'
     }])
 
-    # Predict
-    log_pred   = model.predict(input_data[features])[0]
+    # 5. Strictly align feature order to match the training matrices layout
+    final_input = input_data[features]
+
+    # 6. Predict and inverse-transform target log to real SAR currency
+    log_pred   = model.predict(final_input)[0]
     price_pred = np.expm1(log_pred)
 
-    # Display result
+    # Display result safely
     st.success(f"### 💰 Estimated Price: {price_pred:,.0f} SAR")
 
     # Price range (±15%)
@@ -141,5 +153,5 @@ if st.button("💰 Predict Price", type="primary", use_container_width=True):
     high = price_pred * 1.15
     st.info(f"📊 Likely range: **{low:,.0f} SAR** → **{high:,.0f} SAR**")
 
-    # Context
+    # Context display
     st.caption(f"Based on {property_type} in {city} | {area} sqm | {beds} beds | Age: {age} years")
