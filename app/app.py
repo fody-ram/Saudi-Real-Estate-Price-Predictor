@@ -21,14 +21,15 @@ st.set_page_config(
 
 @st.cache_resource
 def load_model():
-    model       = joblib.load('models/xgb_model.pkl')
-    le_city     = joblib.load('models/le_city.pkl')
-    le_district = joblib.load('models/le_district.pkl')
-    le_type     = joblib.load('models/le_type.pkl')
-    features    = joblib.load('models/features.pkl')
+    import os
+    # Works both locally and on Streamlit Cloud
+    base = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    model       = joblib.load(os.path.join(base, 'models', 'xgb_model.pkl'))
+    le_city     = joblib.load(os.path.join(base, 'models', 'le_city.pkl'))
+    le_district = joblib.load(os.path.join(base, 'models', 'le_district.pkl'))
+    le_type     = joblib.load(os.path.join(base, 'models', 'le_type.pkl'))
+    features    = joblib.load(os.path.join(base, 'models', 'features.pkl'))
     return model, le_city, le_district, le_type, features
-
-model, le_city, le_district, le_type, features = load_model()
 
 # ============================================================
 # LOAD CITY & DISTRICT OPTIONS FROM DB

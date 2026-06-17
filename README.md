@@ -7,8 +7,7 @@ Built on 220,000+ real listings scraped from aqar.fm — one of Saudi Arabia's l
 
 ## 🔴 Live Demo
 
-👉 [Try the app here](https://huggingface.co/spaces/YOUR_USERNAME/saudi-real-estate-predictor)
-_(link will be active after deployment)_
+👉 [Try the app here](https://saudi-real-estate-price-predictor-8sgzhdm62dluxewu53xpq8.streamlit.app/)
 
 ---
 
@@ -38,11 +37,20 @@ _(link will be active after deployment)_
 
 ![SHAP](notebooks/plot6_shap_importance.png)
 
+## 📈 Insights Summary
+
+| Plot               | Insight                                          |
+| ------------------ | ------------------------------------------------ |
+| Price Distribution | Heavy right skew → log transform needed          |
+| Price by City      | Riyadh 2.17M SAR vs Buraidah 0.35M SAR           |
+| Price vs Area      | Non-linear relationship, location confounds size |
+| SHAP Analysis      | Location (lng/lat) > Area > City > Age           |
+
 ## 🖥️ App Demo
 
 ![App Screenshot](notebooks/app_screenshot.png)
 
-## ![App Screenshot](notebooks/app_screenshot_2.png)
+![App Screenshot 2](notebooks/app_screenshot_2.png)
 
 ## 🔍 Key Findings
 
@@ -57,7 +65,7 @@ _(link will be active after deployment)_
 ## ⚙️ How to Run Locally
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/saudi-real-estate-predictor
+git clone git clone https://github.com/fody-ram/Saudi-Real-Estate-Price-Predictor.git
 cd saudi-real-estate-predictor
 pip install -r requirements.txt
 streamlit run app/app.py
@@ -85,17 +93,6 @@ streamlit run app/app.py
 
 ---
 
-## 📈 EDA Highlights
-
-| Plot               | Insight                                          |
-| ------------------ | ------------------------------------------------ |
-| Price Distribution | Heavy right skew → log transform needed          |
-| Price by City      | Riyadh 2.17M SAR vs Buraidah 0.35M SAR           |
-| Price vs Area      | Non-linear relationship, location confounds size |
-| SHAP Analysis      | Location (lng/lat) > Area > City > Age           |
-
----
-
 ## 🛠️ Tech Stack
 
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
@@ -105,4 +102,4 @@ streamlit run app/app.py
 
 ---
 
-- LinkedIn: [your-linkedin](https://www.linkedin.com/in/fadwa-ramadan-hassan/)
+- LinkedIn: [linkedin](https://www.linkedin.com/in/fadwa-ramadan-hassan/)
