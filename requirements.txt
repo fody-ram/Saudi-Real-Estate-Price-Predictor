@@ -1,8 +1,8 @@
-streamlit>=1.35.0
+streamlit
 xgboost
-scikit-learn==1.3.0
+scikit-learn==1.5.2
 pandas
-numpy
+numpy==1.26.4
 matplotlib
 seaborn
 shap
