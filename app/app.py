@@ -111,11 +111,12 @@ if st.button("💰 Predict Price", type="primary", use_container_width=True):
         'Commercial': 'تجاري'
     }
     mapped_property_type = type_mapping.get(property_type, property_type)
+    model, le_city, le_district, le_type, features = load_model()
 
-    # 2. Encode categorical inputs safely
-    city_enc = le_city.transform([city])[0] if city in le_city.classes_ else le_city.transform([le_city.classes_[0]])[0]
-    district_enc = le_district.transform([district])[0] if district in le_district.classes_ else le_district.transform([le_district.classes_[0]])[0]
-    type_enc = le_type.transform([mapped_property_type])[0] if mapped_property_type in le_type.classes_ else le_type.transform([le_type.classes_[0]])[0]
+    # Encode categorical inputs
+    city_enc     = le_city.transform([city])[0] if city in le_city.classes_ else 0
+    district_enc = le_district.transform([district])[0] if district in le_district.classes_ else 0
+    type_enc     = le_type.transform([property_type])[0] if property_type in le_type.classes_ else 0
 
     # 3. Get approximate lat/lng coordinates
     lat, lng = city_coords.get(city, (24.7136, 46.6753))
