@@ -123,21 +123,23 @@ if st.button("💰 Predict Price", type="primary", use_container_width=True):
 
     # 4. Build input row using the EXACT column names from the notebook training phase
     input_data = pd.DataFrame([{
-        'size'            : area,              # Notebook used 'size', not 'area'
-        'beds'            : beds,
-        'v_bathrooms'     : wc,                # Notebook used 'v_bathrooms', not 'wc'
-        'v_living_rooms'  : livings,           # Notebook used 'v_living_rooms', not 'livings'
-        'street_width'    : street_width,
-        'age'             : age,
-        'is_furnished'    : int(furnished),    # Notebook used 'is_furnished'
-        'has_ac'          : int(ac),           # Notebook used 'has_ac'
-        'has_kitchen'     : int(ketchen),      # Notebook used 'has_kitchen'
-        'lat'             : lat,
-        'lng'             : lng,
-        'city_encoded'    : city_enc,          # Notebook used 'city_encoded'
-        'district_encoded': district_enc,      # Notebook used 'district_encoded'
-        'type_encoded'    : type_enc           # Notebook used 'type_encoded'
+        'area'        : area,
+        'beds'        : beds,
+        'livings'     : livings,
+        'wc'          : wc,
+        'street_width': street_width,
+        'age'         : age,
+        'furnished'   : int(furnished),
+        'ac'          : int(ac),
+        'ketchen'     : int(ketchen),
+        'lat'         : lat,
+        'lng'         : lng,
+        'city_enc'    : city_enc,
+        'district_enc': district_enc,
+        'type_enc'    : type_enc,
     }])
+
+    final_input = input_data[features]
 
     # 5. Strictly align feature order to match the training matrices layout
     final_input = input_data[features]
